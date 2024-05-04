@@ -10,14 +10,15 @@ const getCollection = async (dbName, collectionName) => {
     return client.db(dbName).collection(collectionName)
 }
 
-router.get('/', async (request, response) => {
+router.get('/', async (_, response) => {
     const collection = await getCollection('todo-api', 'todos')
     const todos = await collection.find().toArray()
 	response.json(todos)
 })
 
 router.post('/', async (request, response) => {
-	const { item, complete } = request.body
+	const { item } = request.body
+    const complete = false
 	const collection = await getCollection('todo-api', 'todos')
 	const result = await collection.insertOne({ item, complete })
     response.json(result)
